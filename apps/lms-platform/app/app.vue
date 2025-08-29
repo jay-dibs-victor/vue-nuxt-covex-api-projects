@@ -28,6 +28,14 @@
         </div>
       </section>
 
+      <section class="modules">
+        <h3>Modules</h3>
+        <div class="module-item">3.1 Intro ✓</div>
+        <div class="module-item">3.2 Regression ✓</div>
+        <div class="module-item active">3.3 Model Building ▶</div>
+      </section>
+
+
     </main>
 
   </div>
