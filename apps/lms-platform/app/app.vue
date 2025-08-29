@@ -17,6 +17,17 @@
           <p>Oct 28, 2024</p>
         </div>
       </header>
+      
+      <section class="course-card">
+        <div class="card-header">
+          <h2>Data Science Masterclass</h2>
+          <strong>68% Progress</strong>
+        </div>
+        <div class="video-mock">
+          <span>Module 3: Linear Regression</span>
+        </div>
+      </section>
+
     </main>
 
   </div>
