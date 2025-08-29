@@ -10,7 +10,15 @@
         <a href="#" class="nav-item">Settings</a>
       </nav>
     </aside>
-    <main class="main-content">Main Content</main>
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="welcome">
+          <h1>Welcome back, <span>Sarah!</span></h1>
+          <p>Oct 28, 2024</p>
+        </div>
+      </header>
+    </main>
+
   </div>
 </template>
 
