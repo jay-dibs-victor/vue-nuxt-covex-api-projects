@@ -6,7 +6,21 @@
         <a href="#">MEN</a> | <a href="#">WOMEN</a> | <a href="#">CART (0)</a>
       </nav>
     </header>
-    <main>Store Catalog</main>
+    <main class="container layout">
+      <aside class="sidebar">
+        <h3>Filters</h3>
+        <div class="filter-group">
+          <h4>Category</h4>
+          <label><input type="checkbox" /> Tops</label>
+          <label><input type="checkbox" /> Bottoms</label>
+        </div>
+      </aside>
+      <section class="catalog">
+        <h3>Catalog</h3>
+        <div class="grid">Product Cards here</div>
+      </section>
+    </main>
+
   </div>
 </template>
 
