@@ -21,54 +21,76 @@
     
     <main class="main">
       <section class="hero">
-        <div class="hero-image">
-          <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&q=80&w=2000" alt="Lake Cabin" />
-          <div class="hero-search-overlay">
-            <div class="search-box">
-              <div class="search-field">
+        <div class="hero-image-wrap">
+          <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&q=80&w=2000" alt="Lake House" />
+          <div class="hero-overlay-content">
+            <div class="search-container">
+              <div class="search-item">
                 <span class="label">Location</span>
                 <input type="text" placeholder="Where to?" />
               </div>
-              <div class="divider"></div>
-              <div class="search-field">
-                <span class="label">Check-in</span>
+              <div class="sep"></div>
+              <div class="search-item">
+                <span class="label">Check in</span>
                 <span class="val">Add dates</span>
               </div>
-              <div class="divider"></div>
-              <div class="search-field">
-                <span class="label">Check-out</span>
+              <div class="sep"></div>
+              <div class="search-item">
+                <span class="label">Check out</span>
                 <span class="val">Add dates</span>
               </div>
-              <div class="divider"></div>
-              <div class="search-field">
+              <div class="sep"></div>
+              <div class="search-item">
                 <span class="label">Guests</span>
                 <span class="val">Add guests</span>
               </div>
-              <button class="search-btn">🔍</button>
+              <button class="search-action">🔍</button>
             </div>
+            <h2>Discover your next adventure.</h2>
           </div>
-        </div>
-        <div class="hero-title-container">
-          <h2>Discover your next adventure.</h2>
         </div>
       </section>
 
+      <section class="categories">
+        <div class="cat-item active">🏠 <span>Cabins</span></div>
+        <div class="cat-item">🏊 <span>Pools</span></div>
+        <div class="cat-item">🏝️ <span>Islands</span></div>
+        <div class="cat-item">🏙️ <span>Cities</span></div>
+        <div class="cat-item">🏞️ <span>Parks</span></div>
+      </section>
 
-      <div class="grid">
-        <div v-for="i in 4" :key="i" class="card">
-          <div class="img-wrap">
-            <img :src="`https://images.unsplash.com/photo-${1518780664697 + i}?auto=format&fit=crop&q=80&w=400`" alt="Property" />
+      <div class="listing-grid">
+        <div v-for="prop in listings" :key="prop.id" class="listing-card">
+          <div class="img-container">
+            <img :src="prop.image" :alt="prop.title" />
+            <button class="heart">❤️</button>
+            <div class="badge" v-if="prop.badge">{{ prop.badge }}</div>
           </div>
-          <div class="info">
-            <div class="top"><strong>Mountain Cabin {{i}}</strong> <span>⭐ 4.9</span></div>
-            <p>500 miles away</p>
-            <p><strong>$285</strong> / night</p>
+          <div class="listing-details">
+            <div class="listing-header">
+              <h3>{{ prop.title }}</h3>
+              <div class="rating">⭐ {{ prop.rating }}</div>
+            </div>
+            <p class="details">{{ prop.details }}</p>
+            <p class="dates">{{ prop.dates }}</p>
+            <p class="price"><strong>${{ prop.price }}</strong> / night</p>
           </div>
         </div>
       </div>
     </main>
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+
+const listings = ref([
+  { id: 1, title: 'Cozy Mountain Retreat', price: 285, rating: 4.91, details: '500 miles away', dates: 'Oct 18-23', image: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=600', badge: 'Guest Favorite' },
+  { id: 2, title: 'Luxury Oceanfront Villa', price: 750, rating: 4.98, details: '1,200 miles away', dates: 'Nov 12-17', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=600', badge: 'Superhost' },
+  { id: 3, title: 'Skylight Treehouse', price: 320, rating: 4.85, details: '300 miles away', dates: 'Dec 5-10', image: 'https://images.unsplash.com/photo-1449156001433-469b69843f32?auto=format&fit=crop&q=80&w=600' },
+  { id: 4, title: 'Stylish Loft', price: 410, rating: 4.79, details: '10 miles away', dates: 'Oct 25-30', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=600' }
+])
+</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap');
@@ -77,6 +99,7 @@ body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   color: #222;
+  background: white;
 }
 
 .header {
@@ -85,7 +108,7 @@ body {
   background: white;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .header-container {
@@ -102,6 +125,7 @@ body {
   font-weight: 800;
   color: #ff385c;
   font-size: 1.5rem;
+  letter-spacing: -0.04em;
 }
 
 .nav-links {
@@ -142,136 +166,224 @@ body {
   padding: 0.5rem 0.5rem 0.5rem 1rem;
   border-radius: 2rem;
   cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.profile-pill:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .hero {
-  position: relative;
   padding: 0 5rem;
   margin-top: 2rem;
 }
 
-.hero-image {
+.hero-image-wrap {
   position: relative;
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   overflow: hidden;
-  height: 500px;
+  height: 550px;
 }
 
-.hero-image img {
+.hero-image-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.hero-search-overlay {
+.hero-overlay-content {
   position: absolute;
-  top: 15%;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 3rem;
 }
 
-.search-box {
+.search-container {
   background: white;
-  border-radius: 2rem;
+  border-radius: 3rem;
   display: flex;
   align-items: center;
   padding: 0.5rem 0.5rem 0.5rem 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  width: 80%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
   max-width: 850px;
 }
 
-.search-field {
+.search-item {
   display: flex;
   flex-direction: column;
   padding: 0 1.5rem;
   flex: 1;
 }
 
-.search-field .label {
-  font-size: 0.75rem;
+.search-item .label {
+  font-size: 0.7rem;
   font-weight: 800;
   text-transform: uppercase;
+  color: #222;
 }
 
-.search-field input {
+.search-item input {
   border: none;
   outline: none;
-  font-size: 0.9rem;
-  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
 }
 
-.search-field .val {
-  font-size: 0.9rem;
+.search-item .val {
+  font-size: 0.85rem;
   color: #717171;
-  margin-top: 0.25rem;
+  margin-top: 0.2rem;
 }
 
-.divider {
+.sep {
   width: 1px;
   height: 32px;
   background: #ebebeb;
 }
 
-.search-btn {
+.search-action {
   background: #ff385c;
   border: none;
   width: 48px;
   height: 48px;
   border-radius: 50%;
   color: white;
-  font-size: 1.2rem;
+  font-size: 1rem;
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.hero-title-container {
-  margin-top: 2rem;
+.search-action:hover {
+  transform: scale(1.05);
 }
 
-.hero-title-container h2 {
+.hero-overlay-content h2 {
   font-family: 'Outfit', sans-serif;
-  font-size: 3rem;
+  color: white;
+  font-size: 3.5rem;
   font-weight: 800;
+  margin-top: auto;
+  margin-bottom: 5rem;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   letter-spacing: -0.04em;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2.5rem;
-  padding: 4rem 5rem;
+.categories {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  padding: 2.5rem 5rem;
+  border-bottom: 1px solid #f7f7f7;
 }
 
-.card {
+.cat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: #717171;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.cat-item:hover, .cat-item.active {
+  opacity: 1;
+  color: #222;
+}
+
+.cat-item.active {
+  border-bottom: 2px solid #222;
+  padding-bottom: 0.75rem;
+}
+
+.cat-item span {
+  font-size: 2rem;
+}
+
+.listing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 2rem 5rem 5rem;
+}
+
+.listing-card {
   cursor: pointer;
 }
 
-.img-wrap {
+.img-container {
+  position: relative;
   aspect-ratio: 1;
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   overflow: hidden;
   margin-bottom: 0.75rem;
 }
 
-.img-wrap img {
+.img-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s;
 }
 
-.info .top {
+.listing-card:hover .img-container img {
+  transform: scale(1.05);
+}
+
+.heart {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.listing-header {
   display: flex;
   justify-content: space-between;
-  font-weight: 700;
-  font-size: 1rem;
+  margin-bottom: 0.2rem;
 }
 
-.info p {
-  margin: 0.25rem 0;
+.listing-header h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.rating {
+  font-size: 0.9rem;
+}
+
+.details, .dates {
+  font-size: 0.9rem;
   color: #717171;
+  margin: 0.1rem 0;
+}
+
+.price {
+  margin-top: 0.4rem;
   font-size: 0.95rem;
 }
 </style>
