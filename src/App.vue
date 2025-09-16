@@ -16,7 +16,7 @@ const projects = ref<Project[]>([
     title: 'Vue Portfolio App',
     description: 'A personal showcase with a revamped premium footer and cleaned-up UI components.',
     image: '/assets/portfolio.png',
-    port: 5173,
+    port: 5174,
     tags: ['Vue 3', 'Vite', 'Portfolio']
   },
   {
