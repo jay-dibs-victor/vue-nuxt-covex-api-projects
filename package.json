@@ -10,9 +10,10 @@
     "dev": "vite --port 5173",
     "dev:portfolio": "npm run dev --workspace=apps/portfolio-app -- --port 5174",
     "dev:lms": "npm run dev --workspace=apps/lms-platform -- --port 3001",
+    "dev:lms:backend": "npm run --workspace=apps/lms-platform exec -- convex dev",
     "dev:airbnb": "npm run dev --workspace=apps/airbnb-clone -- --port 3002",
     "dev:ecommerce": "npm run dev --workspace=apps/ecommerce-app -- --port 3003",
-    "dev:all": "npx concurrently \"npm run dev\" \"npm run dev:portfolio\" \"npm run dev:lms\" \"npm run dev:airbnb\" \"npm run dev:ecommerce\"",
+    "dev:all": "npx concurrently \"npm run dev\" \"npm run dev:portfolio\" \"npm run dev:lms\" \"npm run dev:lms:backend\" \"npm run dev:airbnb\" \"npm run dev:ecommerce\"",
 
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
