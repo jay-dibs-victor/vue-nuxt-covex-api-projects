@@ -1,3 +1,7 @@
+<script setup>
+const { data: courses } = useConvexQuery("courses:getCourses");
+</script>
+
 <template>
   <div class="primary-content">
     <div class="welcome-hero">
@@ -5,14 +9,19 @@
       <p>Monday, October 28, 2024</p>
     </div>
 
-    <div class="video-section">
+    <div class="video-section" v-if="courses && courses.length > 0">
       <div class="player">
         <div class="play-overlay">▶</div>
-        <img src="https://images.unsplash.com/photo-1551288049-bbbda5366991?auto=format&fit=crop&q=80&w=1200" alt="Video" />
+        <img :src="courses[0].thumbnail" alt="Video" />
       </div>
       <div class="player-info">
-        <h2>Module 3: Linear Regression</h2>
-        <p>Mastering the fundamentals of predictive modeling.</p>
+        <h2>{{ courses[0].title }}</h2>
+        <p>{{ courses[0].description }}</p>
+      </div>
+    </div>
+    <div v-else class="video-section">
+      <div class="player-info" style="padding: 2rem;">
+        <h2>Loading Course Data...</h2>
       </div>
     </div>
   </div>
