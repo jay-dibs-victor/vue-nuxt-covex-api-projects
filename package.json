@@ -8,11 +8,11 @@
   ],
   "scripts": {
     "dev": "vite --port 5173",
-    "dev:portfolio": "npm run dev --workspace=apps/portfolio-app -- --port 5174",
-    "dev:lms": "npm run dev --workspace=apps/lms-platform -- --port 3001",
-    "dev:lms:backend": "npm run --workspace=apps/lms-platform exec -- convex dev",
-    "dev:airbnb": "npm run dev --workspace=apps/airbnb-clone -- --port 3002",
-    "dev:ecommerce": "npm run dev --workspace=apps/ecommerce-app -- --port 3003",
+    "dev:portfolio": "cd apps/portfolio-app && npm run dev -- --port 5174",
+    "dev:lms": "cd apps/lms-platform && npm run dev -- --port 3001",
+    "dev:lms:backend": "cd apps/lms-platform && npx convex dev",
+    "dev:airbnb": "cd apps/airbnb-clone && npm run dev -- --port 3002",
+    "dev:ecommerce": "cd apps/ecommerce-app && npm run dev -- --port 3003",
     "dev:all": "npx concurrently \"npm run dev\" \"npm run dev:portfolio\" \"npm run dev:lms\" \"npm run dev:lms:backend\" \"npm run dev:airbnb\" \"npm run dev:ecommerce\"",
 
     "build": "vue-tsc -b && vite build",
