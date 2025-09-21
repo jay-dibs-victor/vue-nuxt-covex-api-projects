@@ -1,22 +1,41 @@
+<script setup>
+const { data: courses } = useConvexQuery("courses:getCourses");
+const { data: tasks } = useConvexQuery("tasks:getTasks");
+const toggleTask = useConvexMutation("tasks:toggleTask");
+
+const handleTaskClick = async (task) => {
+  await toggleTask({ taskId: task._id, completed: !task.completed });
+};
+</script>
+
 <template>
   <aside class="side-panel">
-    <section class="panel-section">
+    <section class="panel-section" v-if="courses && courses.length > 0">
       <h3>Course Progress</h3>
       <div class="progress-card">
         <div class="progress-header">
-          <strong>Data Science Masterclass</strong>
-          <span>68%</span>
+          <strong>{{ courses[0].title }}</strong>
+          <span>{{ courses[0].progress }}%</span>
         </div>
-        <div class="progress-bar"><div class="fill" style="width: 68%"></div></div>
+        <div class="progress-bar">
+          <div class="fill" :style="{ width: courses[0].progress + '%' }"></div>
+        </div>
       </div>
     </section>
 
-    <section class="panel-section">
+    <section class="panel-section" v-if="tasks">
       <h3>Daily Tasks</h3>
       <div class="task-list">
-        <div class="task-item done">Study Linear Regression ✓</div>
-        <div class="task-item">Complete Assignment</div>
-        <div class="task-item">Watch Next Module</div>
+        <div 
+          v-for="task in tasks" 
+          :key="task._id" 
+          class="task-item" 
+          :class="{ done: task.completed }"
+          @click="handleTaskClick(task)"
+          style="cursor: pointer; transition: all 0.2s;"
+        >
+          {{ task.title }} <span v-if="task.completed">✓</span>
+        </div>
       </div>
     </section>
 
