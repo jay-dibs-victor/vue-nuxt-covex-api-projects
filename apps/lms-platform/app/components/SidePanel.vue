@@ -1,4 +1,5 @@
 <script setup>
+import { useConvexQuery, useConvexMutation } from '../../composables/useConvex';
 const { data: courses } = useConvexQuery("courses:getCourses");
 const { data: tasks } = useConvexQuery("tasks:getTasks");
 const toggleTask = useConvexMutation("tasks:toggleTask");

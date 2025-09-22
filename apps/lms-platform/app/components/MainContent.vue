@@ -1,4 +1,5 @@
 <script setup>
+import { useConvexQuery } from '../../composables/useConvex';
 const { data: courses } = useConvexQuery("courses:getCourses");
 </script>
 
