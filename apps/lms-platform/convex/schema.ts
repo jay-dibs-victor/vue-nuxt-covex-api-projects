@@ -9,13 +9,13 @@ export default defineSchema({
     progress: v.number(),
     thumbnail: v.string(),
     status: v.union(v.literal("active"), v.literal("completed"), v.literal("not-started")),
-    instructor: v.object({
+    instructor: v.optional(v.object({
       name: v.string(),
       avatar: v.string(),
       title: v.string(),
-    }),
-    totalLessons: v.number(),
-    finishedLessons: v.number(),
+    })),
+    totalLessons: v.optional(v.number()),
+    finishedLessons: v.optional(v.number()),
   }),
   courseModules: defineTable({
     courseId: v.id("courses"),
