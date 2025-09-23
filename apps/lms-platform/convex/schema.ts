@@ -8,11 +8,37 @@ export default defineSchema({
     description: v.string(),
     progress: v.number(),
     thumbnail: v.string(),
-    status: v.union(v.literal("in-progress"), v.literal("completed"), v.literal("not-started")),
+    status: v.union(v.literal("active"), v.literal("completed"), v.literal("not-started")),
+    instructor: v.object({
+      name: v.string(),
+      avatar: v.string(),
+      title: v.string(),
+    }),
+    totalLessons: v.number(),
+    finishedLessons: v.number(),
+  }),
+  courseModules: defineTable({
+    courseId: v.id("courses"),
+    title: v.string(),
+    order: v.number(),
+  }),
+  courseUnits: defineTable({
+    moduleId: v.id("courseModules"),
+    title: v.string(),
+    type: v.union(v.literal("text"), v.literal("video"), v.literal("resource"), v.literal("quiz")),
+    status: v.union(v.literal("completed"), v.literal("active"), v.literal("locked")),
+    order: v.number(),
+    duration: v.optional(v.string()),
   }),
   tasks: defineTable({
     title: v.string(),
+    subtitle: v.string(),
     completed: v.boolean(),
-    courseId: v.id("courses"),
+    type: v.union(v.literal("assignment"), v.literal("quiz")),
+  }),
+  activities: defineTable({
+    title: v.string(),
+    subtitle: v.string(),
+    type: v.union(v.literal("success"), v.literal("info"), v.literal("warning")),
   })
 });
