@@ -13,12 +13,9 @@
 
       <!-- Middle Column: Progress, Player, Modules -->
       <div class="col-middle">
-        <div class="card progress-card">
-           <!-- Real data here -->
-        </div>
-        <div class="card player-card">
-           <!-- Player here -->
-        </div>
+        <CourseProgress />
+        <VideoPlayer />
+        <CourseModules />
       </div>
 
       <!-- Right Column: Tasks, Activity, Instructor -->
