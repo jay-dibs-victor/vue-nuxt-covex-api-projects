@@ -8,13 +8,7 @@
       <!-- Left Column: Course Status & Active Courses -->
       <div class="col-left">
         <CourseStatus />
-
-        <div class="card active-courses">
-          <h3>Active Courses</h3>
-          <div class="course-list">
-             <!-- Real data will go here -->
-          </div>
-        </div>
+        <ActiveCourses />
       </div>
 
       <!-- Middle Column: Progress, Player, Modules -->
