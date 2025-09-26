@@ -20,7 +20,9 @@
 
       <!-- Right Column: Tasks, Activity, Instructor -->
       <div class="col-right">
-        <!-- Real data here -->
+        <UpcomingTasks />
+        <RecentActivity />
+        <InstructorProfile />
       </div>
     </div>
   </div>
