@@ -5,12 +5,12 @@ import { v } from "convex/values";
 export const getTasks = query({
   args: {},
   handler: async (ctx) => {
-    return await ctx.db.query("tasks").collect();
+    return await ctx.db.query("lms_tasks").collect();
   },
 });
 
 export const toggleTask = mutation({
-  args: { taskId: v.id("tasks"), completed: v.boolean() },
+  args: { taskId: v.id("lms_tasks"), completed: v.boolean() },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.taskId, { completed: args.completed });
   },

@@ -5,7 +5,17 @@
       <button class="view-all">View all</button>
     </div>
     
-    <div v-if="courses && courses.length > 0" class="course-list">
+    <div v-if="error" class="error-state">
+      <p>Failed to load courses</p>
+      <small>{{ error.message }}</small>
+    </div>
+    <div v-else-if="courses === undefined" class="loading">
+      Loading courses...
+    </div>
+    <div v-else-if="courses.length === 0" class="empty-state">
+      No active courses found.
+    </div>
+    <div v-else class="course-list">
       <div 
         v-for="course in courses" 
         :key="course._id" 
@@ -23,13 +33,12 @@
         </div>
       </div>
     </div>
-    <div v-else class="loading">Loading courses...</div>
   </div>
 </template>
 
 <script setup>
 import { useConvexQuery } from '~/composables/useConvex';
-const { data: courses } = useConvexQuery("courses:getCourses");
+const { data: courses, error } = useConvexQuery("courses:getCourses");
 </script>
 
 <style scoped>
@@ -106,10 +115,23 @@ const { data: courses } = useConvexQuery("courses:getCourses");
   color: #94a3b8;
 }
 
-.loading {
+.loading, .empty-state {
   color: #64748b;
   font-size: 0.9rem;
   text-align: center;
+  padding: 1.5rem;
+}
+
+.error-state {
+  color: #ef4444;
+  text-align: center;
   padding: 1rem;
+}
+
+.error-state small {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
 }
 </style>

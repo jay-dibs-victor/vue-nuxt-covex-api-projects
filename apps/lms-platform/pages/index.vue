@@ -11,10 +11,10 @@
         <ActiveCourses />
       </div>
 
-      <!-- Middle Column: Progress, Player, Modules -->
+      <!-- Middle Column: Player, Progress, Modules -->
       <div class="col-middle">
-        <CourseProgress />
         <VideoPlayer />
+        <CourseProgress />
         <CourseModules />
       </div>
 

@@ -2,7 +2,16 @@
   <div class="card activity-card">
     <h3>Recent Activity</h3>
     
-    <div v-if="activities && activities.length > 0" class="activity-list">
+    <div v-if="error" class="error-state">
+      <p>Failed to load activity</p>
+    </div>
+    <div v-else-if="activities === undefined" class="loading">
+      Loading activity...
+    </div>
+    <div v-else-if="activities.length === 0" class="empty-state">
+      No recent activity
+    </div>
+    <div v-else class="activity-list">
       <div v-for="activity in activities" :key="activity._id" class="activity-item">
         <div class="activity-dot" :class="activity.type"></div>
         <div class="activity-info">
@@ -11,13 +20,12 @@
         </div>
       </div>
     </div>
-    <div v-else class="loading">No recent activity</div>
   </div>
 </template>
 
 <script setup>
 import { useConvexQuery } from '~/composables/useConvex';
-const { data: activities } = useConvexQuery("activities:getActivities");
+const { data: activities, error } = useConvexQuery("activities:getActivities");
 </script>
 
 <style scoped>

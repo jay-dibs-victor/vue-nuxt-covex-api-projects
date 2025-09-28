@@ -3,21 +3,20 @@ import { mutation } from "./_generated/server";
 
 export default mutation({
   handler: async (ctx) => {
-    const existing = await ctx.db.query("courses").collect();
-    if (existing.length > 0) {
-      // Clear existing for a clean seed
-      for (const course of existing) { await ctx.db.delete(course._id); }
-      const oldTasks = await ctx.db.query("tasks").collect();
-      for (const task of oldTasks) { await ctx.db.delete(task._id); }
-      const oldModules = await ctx.db.query("courseModules").collect();
-      for (const m of oldModules) { await ctx.db.delete(m._id); }
-      const oldUnits = await ctx.db.query("courseUnits").collect();
-      for (const u of oldUnits) { await ctx.db.delete(u._id); }
-      const oldActs = await ctx.db.query("activities").collect();
-      for (const a of oldActs) { await ctx.db.delete(a._id); }
-    }
+    // Clear ALL new tables
+    const existing = await ctx.db.query("lms_courses").collect();
+    for (const c of existing) { await ctx.db.delete(c._id); }
+    const tasks = await ctx.db.query("lms_tasks").collect();
+    for (const t of tasks) { await ctx.db.delete(t._id); }
+    const modules = await ctx.db.query("lms_modules").collect();
+    for (const m of modules) { await ctx.db.delete(m._id); }
+    const units = await ctx.db.query("lms_units").collect();
+    for (const u of units) { await ctx.db.delete(u._id); }
+    const activities = await ctx.db.query("lms_activities").collect();
+    for (const a of activities) { await ctx.db.delete(a._id); }
 
-    const courseId = await ctx.db.insert("courses", {
+    // Seed Courses
+    const courseId = await ctx.db.insert("lms_courses", {
       title: "Data Science Masterclass",
       description: "Learn how to build scalable models using data science.",
       progress: 68,
@@ -32,35 +31,38 @@ export default mutation({
       finishedLessons: 22
     });
 
-    // Add secondary course to show in list
-    await ctx.db.insert("courses", {
+    await ctx.db.insert("lms_courses", {
       title: "Project Management",
       description: "Master agile workflows.",
       progress: 15,
-      thumbnail: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=600",
-      status: "active",
-      instructor: { name: "Sarah Jenkins", title: "Instructor", avatar: "" },
-      totalLessons: 10,
-      finishedLessons: 1
+      thumbnail: "https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?auto=format&fit=crop&q=80&w=600",
+      status: "not-started",
+      instructor: {
+        name: "Sarah Jenkins",
+        title: "Project Lead",
+        avatar: "https://randomuser.me/api/portraits/women/44.jpg"
+      },
+      totalLessons: 12,
+      finishedLessons: 0
     });
 
-    const moduleId = await ctx.db.insert("courseModules", {
+    // Seed Modules & Units
+    const modId = await ctx.db.insert("lms_modules", {
       courseId,
       title: "Module 3: Linear Regression & Model Building",
       order: 3
     });
 
-    await ctx.db.insert("courseUnits", { moduleId, title: "3.1 Introduction", type: "text", status: "completed", order: 1 });
-    await ctx.db.insert("courseUnits", { moduleId, title: "3.2 Key Concepts", type: "text", status: "completed", order: 2 });
-    await ctx.db.insert("courseUnits", { moduleId, title: "3.3 Linear Regression", type: "video", status: "active", order: 3, duration: "18:24" });
-    await ctx.db.insert("courseUnits", { moduleId, title: "3.4 Model Building", type: "resource", status: "locked", order: 4 });
-    await ctx.db.insert("courseUnits", { moduleId, title: "3.5 Hands-on Lab", type: "resource", status: "locked", order: 5 });
+    await ctx.db.insert("lms_units", { moduleId: modId, title: "3.1 Introduction", type: "text", status: "completed", order: 1 });
+    await ctx.db.insert("lms_units", { moduleId: modId, title: "3.2 Key Concepts", type: "text", status: "completed", order: 2 });
+    await ctx.db.insert("lms_units", { moduleId: modId, title: "3.3 Linear Regression", type: "video", status: "active", order: 3, duration: "18:24" });
 
-    await ctx.db.insert("tasks", { title: "Assignment: Oct 30", subtitle: "Assignment today", completed: false, type: "assignment" });
-    await ctx.db.insert("tasks", { title: "Quiz Nov 2", subtitle: "Assignment now", completed: false, type: "quiz" });
+    // Seed Tasks
+    await ctx.db.insert("lms_tasks", { title: "Assignment: Oct 30", subtitle: "Linear Regression Intro", completed: false, type: "assignment" });
+    await ctx.db.insert("lms_tasks", { title: "Quiz: Nov 2", subtitle: "Model Evaluation", completed: false, type: "quiz" });
 
-    await ctx.db.insert("activities", { title: "Assignment graded", subtitle: "Added 3 hours ago", type: "success" });
-    await ctx.db.insert("activities", { title: "Recent Activity", subtitle: "Decent 2 hours ago", type: "info" });
-    await ctx.db.insert("activities", { title: "Laura warns vepask", subtitle: "Next 3 hours ago", type: "warning" });
+    // Seed Activities
+    await ctx.db.insert("lms_activities", { title: "Module Completed", subtitle: "You finished Module 2", type: "success" });
+    await ctx.db.insert("lms_activities", { title: "New Resource", subtitle: "Cheatsheet added to Module 3", type: "info" });
   }
 });

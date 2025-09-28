@@ -5,7 +5,16 @@
       <button class="more-btn">•••</button>
     </div>
     
-    <div v-if="tasks && tasks.length > 0" class="task-list">
+    <div v-if="error" class="error-state">
+      <p>Failed to load tasks</p>
+    </div>
+    <div v-else-if="tasks === undefined" class="loading">
+      Loading tasks...
+    </div>
+    <div v-else-if="tasks.length === 0" class="empty-state">
+      No upcoming tasks
+    </div>
+    <div v-else class="task-list">
       <div v-for="task in tasks" :key="task._id" class="task-item">
         <div class="task-icon" :class="task.type">
           <svg v-if="task.type === 'assignment'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -17,13 +26,12 @@
         </div>
       </div>
     </div>
-    <div v-else class="loading">No upcoming tasks</div>
   </div>
 </template>
 
 <script setup>
 import { useConvexQuery } from '~/composables/useConvex';
-const { data: tasks } = useConvexQuery("tasks:getTasks");
+const { data: tasks, error } = useConvexQuery("tasks:getTasks");
 </script>
 
 <style scoped>
