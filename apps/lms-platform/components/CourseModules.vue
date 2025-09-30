@@ -1,31 +1,50 @@
 <template>
   <div class="card modules-card">
-    <h3>Course Modules</h3>
+    <h3>Course Curriculum</h3>
     
-    <div class="module-group">
-      <div class="module-header active">
-        <span>3.1 Introduction</span>
-        <span class="icon check">✓</span>
-      </div>
-      <div class="module-header active">
-        <span>3.2 Key Concepts</span>
-        <span class="icon check">✓</span>
-      </div>
-      <div class="module-header current">
-        <span>3.3 Linear Regression</span>
-        <span class="icon chevron">›</span>
-      </div>
-      <div class="module-header locked">
-        <span>3.4 Model Building</span>
-        <span class="icon lock">🔒</span>
-      </div>
-      <div class="module-header locked">
-        <span>3.5 Hands-on Lab</span>
-        <span class="icon lock">🔒</span>
+    <div v-if="modules === undefined" class="loading">Loading curriculum...</div>
+    <div v-else-if="modules.length === 0" class="empty">No modules available yet.</div>
+    <div v-else class="module-group">
+      <div 
+        v-for="module in modules" 
+        :key="module._id" 
+        class="module-item"
+      >
+        <div class="module-header" @click="toggleModule(module._id)">
+          <span class="module-title">{{ module.title }}</span>
+          <span class="icon">{{ expandedModules.has(module._id) ? '▾' : '▸' }}</span>
+        </div>
+        
+        <div v-if="expandedModules.has(module._id)" class="units-list">
+          <ModuleUnits :module-id="module._id" />
+        </div>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+import { useConvexQuery } from '~/composables/useConvex';
+
+const props = defineProps({
+  courseId: {
+    type: String,
+    required: true
+  }
+});
+
+const { data: modules } = useConvexQuery("courseModules:getByCourseId", { courseId: props.courseId });
+const expandedModules = ref(new Set());
+
+const toggleModule = (id) => {
+  if (expandedModules.value.has(id)) {
+    expandedModules.value.delete(id);
+  } else {
+    expandedModules.value.add(id);
+  }
+};
+</script>
 
 <style scoped>
 .module-group {
