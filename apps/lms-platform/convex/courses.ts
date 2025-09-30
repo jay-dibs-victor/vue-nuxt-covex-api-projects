@@ -9,6 +9,13 @@ export const getCourses = query({
   },
 });
 
+export const getById = query({
+  args: { id: v.id("lms_courses") },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.id);
+  },
+});
+
 export const updateProgress = mutation({
   args: { courseId: v.id("lms_courses"), progress: v.number() },
   handler: async (ctx, args) => {
