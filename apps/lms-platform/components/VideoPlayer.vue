@@ -23,8 +23,16 @@
 import { ref, computed } from 'vue';
 import { useConvexQuery } from '~/composables/useConvex';
 
+const props = defineProps({
+  course: {
+    type: Object,
+    default: null
+  }
+});
+
 const { data: courses } = useConvexQuery("courses:getCourses");
 const activeCourse = computed(() => {
+  if (props.course) return props.course;
   return courses.value?.find(c => c.status === 'active') || courses.value?.[0];
 });
 
