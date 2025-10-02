@@ -8,7 +8,7 @@
     </div>
 
     <nav class="nav-menu">
-      <NuxtLink to="/" class="nav-item active">
+      <NuxtLink to="/" class="nav-item">
         <span class="nav-icon">🏠</span> Dashboard
       </NuxtLink>
       <NuxtLink to="/courses" class="nav-item">
@@ -94,7 +94,7 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-.nav-item.active {
+.nav-item.router-link-active {
   background: #3b82f6;
   color: white;
 }
