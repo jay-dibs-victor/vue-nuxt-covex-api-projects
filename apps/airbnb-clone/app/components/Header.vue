@@ -3,22 +3,43 @@
     <div class="header-container">
       <div class="logo">StaySphere</div>
       <button class="mobile-menu-btn">☰</button>
+      
       <nav class="nav-links">
         <a href="#" class="active">Places to stay</a>
         <a href="#">Experiences</a>
         <a href="#">Online Experiences</a>
       </nav>
-      <div class="user-menu">
+
+      <div class="actions">
         <a href="#" class="host-link">Become a Host</a>
         <button class="globe">🌐</button>
-        <div class="profile-pill">
-          <span>☰</span>
-          <div class="user-avatar">👤</div>
-        </div>
+        <UserMenu :user="user" @auth="type => authType = type" @logout="logout" />
       </div>
     </div>
+
+    <AuthModal v-model="authType" @success="handleAuthSuccess" />
   </header>
 </template>
+
+<script setup>
+import { ref, computed } from 'vue';
+import { useConvexQuery } from '~/composables/useConvex';
+
+const authType = ref(null);
+const userId = useCookie('airbnb_user_id');
+
+const { data: user } = useConvexQuery("auth:me", computed(() => ({ 
+  userId: userId.value 
+})));
+
+const handleAuthSuccess = (userData) => {
+  userId.value = userData._id;
+};
+
+const logout = () => {
+  userId.value = null;
+};
+</script>
 
 <style scoped>
 .header {
@@ -72,7 +93,7 @@
   padding-bottom: 0.5rem;
 }
 
-.user-menu {
+.actions {
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -85,21 +106,6 @@
   font-size: 0.9rem;
 }
 
-.profile-pill {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  border: 1px solid #ddd;
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
-  border-radius: 2rem;
-  cursor: pointer;
-  transition: box-shadow 0.2s;
-}
-
-.profile-pill:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
 .globe {
   background: none;
   border: none;
@@ -108,23 +114,12 @@
 }
 
 @media (max-width: 1024px) {
-  .header-container {
-    padding: 0 2rem;
-  }
+  .header-container { padding: 0 2rem; }
 }
 
 @media (max-width: 768px) {
-  .header-container {
-    padding: 0 1.5rem;
-  }
-  .nav-links {
-    display: none;
-  }
-  .user-menu {
-    display: none;
-  }
-  .mobile-menu-btn {
-    display: block;
-  }
+  .header-container { padding: 0 1.5rem; }
+  .nav-links, .actions { display: none; }
+  .mobile-menu-btn { display: block; }
 }
 </style>
