@@ -1,12 +1,31 @@
 <template>
   <section class="categories">
-    <div class="cat-item active">🏠 <span>Cabins</span></div>
-    <div class="cat-item">🏊 <span>Pools</span></div>
-    <div class="cat-item">🏝️ <span>Islands</span></div>
-    <div class="cat-item">🏙️ <span>Cities</span></div>
-    <div class="cat-item">🏞️ <span>Parks</span></div>
+    <div 
+      v-for="cat in categories" 
+      :key="cat.name"
+      class="cat-item"
+      :class="{ active: activeCategory === cat.name }"
+      @click="activeCategory = cat.name"
+    >
+      <span class="icon">{{ cat.icon }}</span>
+      <span class="label">{{ cat.name }}</span>
+    </div>
   </section>
 </template>
+
+<script setup>
+const activeCategory = useState('activeCategory', () => 'All');
+
+const categories = [
+  { name: 'All', icon: '🌍' },
+  { name: 'Beachfront', icon: '🏖️' },
+  { name: 'Cabins', icon: '🏠' },
+  { name: 'Amazing pools', icon: '🏊' },
+  { name: 'Treehouses', icon: '🌳' },
+  { name: 'Desert', icon: '🌵' },
+  { name: 'Mansion', icon: '🏰' },
+];
+</script>
 
 <style scoped>
 .categories {
