@@ -1,33 +1,44 @@
 <template>
-  <div class="listing-grid">
-    <div v-for="prop in listings" :key="prop.id" class="listing-card">
+  <div class="listing-grid" v-if="listings?.length">
+    <div v-for="prop in listings" :key="prop._id" class="listing-card">
       <div class="img-container">
-        <img :src="prop.image" :alt="prop.title" />
+        <img :src="prop.images[0]" :alt="prop.title" />
         <button class="heart">❤️</button>
-        <div class="badge" v-if="prop.badge">{{ prop.badge }}</div>
+        <div class="badge" v-if="prop.rating > 4.9">Guest Favorite</div>
       </div>
       <div class="listing-details">
         <div class="listing-header">
           <h3>{{ prop.title }}</h3>
           <div class="rating">⭐ {{ prop.rating }}</div>
         </div>
-        <p class="details">{{ prop.details }}</p>
-        <p class="dates">{{ prop.dates }}</p>
+        <p class="details">{{ prop.location }}</p>
+        <p class="dates">Available now</p>
         <p class="price"><strong>${{ prop.price }}</strong> / night</p>
       </div>
+    </div>
+  </div>
+  <div v-else-if="error" class="error-state">
+    <p>Failed to load listings. Please try again later.</p>
+  </div>
+  <div v-else class="skeleton-grid">
+    <div v-for="i in 8" :key="i" class="skeleton-card">
+      <div class="skeleton-img"></div>
+      <div class="skeleton-line title"></div>
+      <div class="skeleton-line subtitle"></div>
+      <div class="skeleton-line price"></div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue';
+import { useConvexQuery } from '~/composables/useConvex';
 
-const listings = ref([
-  { id: 1, title: 'Cozy Mountain Retreat', price: 285, rating: 4.91, details: '500 miles away', dates: 'Oct 18-23', image: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=600', badge: 'Guest Favorite' },
-  { id: 2, title: 'Luxury Oceanfront Villa', price: 750, rating: 4.98, details: '1,200 miles away', dates: 'Nov 12-17', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=600', badge: 'Superhost' },
-  { id: 3, title: 'Skylight Treehouse', price: 320, rating: 4.85, details: '300 miles away', dates: 'Dec 5-10', image: 'https://images.unsplash.com/photo-1449156001433-469b69843f32?auto=format&fit=crop&q=80&w=600' },
-  { id: 4, title: 'Stylish Loft', price: 410, rating: 4.79, details: '10 miles away', dates: 'Oct 25-30', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=600' }
-])
+const activeCategory = useState('activeCategory');
+const { data: listings, error } = useConvexQuery(
+  "properties:getProperties", 
+  computed(() => ({ category: activeCategory.value }))
+);
 </script>
 
 <style scoped>
@@ -109,6 +120,49 @@ const listings = ref([
   margin-top: 0.4rem;
   font-size: 0.95rem;
   margin-bottom: 0;
+}
+
+.error-state {
+  text-align: center;
+  padding: 5rem;
+  color: #717171;
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 2rem 5rem 5rem;
+}
+
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skeleton-img {
+  aspect-ratio: 1;
+  background: #f1f5f9;
+  border-radius: 0.75rem;
+  animation: pulse 1.5s infinite;
+}
+
+.skeleton-line {
+  height: 12px;
+  background: #f1f5f9;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite;
+}
+
+.skeleton-line.title { width: 70%; }
+.skeleton-line.subtitle { width: 40%; }
+.skeleton-line.price { width: 30%; margin-top: 0.5rem; }
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
 }
 
 @media (max-width: 768px) {
