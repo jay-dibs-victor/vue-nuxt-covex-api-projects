@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      convexUrl: process.env.NUXT_PUBLIC_CONVEX_URL || process.env.CONVEX_URL || "https://famous-seal-464.convex.cloud"
+      convexUrl: process.env.NUXT_PUBLIC_LMS_CONVEX_URL || process.env.CONVEX_URL || "https://famous-seal-464.convex.cloud"
     }
   }
 })
