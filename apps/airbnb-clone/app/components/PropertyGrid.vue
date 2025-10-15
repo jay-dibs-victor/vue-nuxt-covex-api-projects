@@ -1,39 +1,53 @@
 <template>
-  <div class="listing-grid" v-if="listings?.length">
-    <div v-for="prop in listings" :key="prop._id" class="listing-card">
-      <div class="img-container">
-        <img :src="prop.images[0]" :alt="prop.title" />
-        <button class="heart">❤️</button>
-        <div class="badge" v-if="prop.rating > 4.9">Guest Favorite</div>
-      </div>
-      <div class="listing-details">
-        <div class="listing-header">
-          <h3>{{ prop.title }}</h3>
-          <div class="rating">⭐ {{ prop.rating }}</div>
+  <div class="listing-grid-container">
+    <div class="listing-grid" v-if="listings?.length">
+      <div v-for="prop in listings" :key="prop._id" class="listing-card" @click="selectedProperty = prop">
+        <div class="img-container">
+          <img :src="prop.images[0]" :alt="prop.title" />
+          <button class="heart" @click.stop>❤️</button>
+          <div class="badge" v-if="prop.rating > 4.9">Guest Favorite</div>
         </div>
-        <p class="details">{{ prop.location }}</p>
-        <p class="dates">Available now</p>
-        <p class="price"><strong>${{ prop.price }}</strong> / night</p>
+        <div class="listing-details">
+          <div class="listing-header">
+            <h3>{{ prop.title }}</h3>
+            <div class="rating">⭐ {{ prop.rating }}</div>
+          </div>
+          <p class="details">{{ prop.location }}</p>
+          <p class="dates">Available now</p>
+          <p class="price"><strong>${{ prop.price }}</strong> / night</p>
+        </div>
       </div>
     </div>
-  </div>
-  <div v-else-if="error" class="error-state">
-    <p>Failed to load listings. Please try again later.</p>
-  </div>
-  <div v-else class="skeleton-grid">
-    <div v-for="i in 8" :key="i" class="skeleton-card">
-      <div class="skeleton-img"></div>
-      <div class="skeleton-line title"></div>
-      <div class="skeleton-line subtitle"></div>
-      <div class="skeleton-line price"></div>
+    
+    <div v-else-if="error" class="error-state">
+      <p>Failed to load listings. Please try again later.</p>
     </div>
+    
+    <div v-else class="skeleton-grid">
+      <div v-for="i in 8" :key="i" class="skeleton-card">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-line title"></div>
+        <div class="skeleton-line subtitle"></div>
+        <div class="skeleton-line price"></div>
+      </div>
+    </div>
+
+    <!-- Details Modal -->
+    <PropertyDetailsModal 
+      v-if="selectedProperty" 
+      :property="selectedProperty" 
+      @close="selectedProperty = null"
+      @booking-success="selectedProperty = null"
+    />
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useConvexQuery } from '~/composables/useConvex';
+import PropertyDetailsModal from './PropertyDetailsModal.vue';
 
+const selectedProperty = ref(null);
 const activeCategory = useState('activeCategory');
 const { data: listings, error } = useConvexQuery(
   "properties:getProperties", 
