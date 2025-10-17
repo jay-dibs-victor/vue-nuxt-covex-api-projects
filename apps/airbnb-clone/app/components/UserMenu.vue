@@ -20,7 +20,7 @@
           </div>
           <div class="divider"></div>
           <button class="menu-item">Messages</button>
-          <button class="menu-item">Trips</button>
+          <NuxtLink to="/trips" class="menu-item" @click="isOpen = false">Trips</NuxtLink>
           <button class="menu-item">Wishlists</button>
           <div class="divider"></div>
           <button class="menu-item" @click="logout">Log out</button>
