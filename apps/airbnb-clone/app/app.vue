@@ -2,9 +2,7 @@
   <div class="airbnb-app">
     <Header />
     <main class="main">
-      <Hero />
-      <CategoryNav />
-      <PropertyGrid />
+      <NuxtPage />
     </main>
   </div>
 </template>
