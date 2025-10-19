@@ -6,7 +6,7 @@
         class="scroll-btn left" 
         @click="scroll('left')"
       >
-        <span>‹</span>
+        <Icon name="lucide:chevron-left" />
       </button>
 
       <div class="categories-scroll" ref="scrollContainer" @scroll="handleScroll">
@@ -17,7 +17,9 @@
           :class="{ active: activeCategory === cat.label }"
           @click="activeCategory = cat.label"
         >
-          <span class="icon">{{ cat.icon }}</span>
+          <div class="icon-wrap">
+            <Icon :name="cat.icon" size="24" />
+          </div>
           <span class="label">{{ cat.label }}</span>
         </div>
       </div>
@@ -27,7 +29,7 @@
         class="scroll-btn right" 
         @click="scroll('right')"
       >
-        <span>›</span>
+        <Icon name="lucide:chevron-right" />
       </button>
     </div>
   </div>
@@ -42,18 +44,18 @@ const showLeftArrow = ref(false);
 const showRightArrow = ref(true);
 
 const categories = [
-  { label: 'All', icon: '🌍' },
-  { label: 'Beachfront', icon: '🏖️' },
-  { label: 'Cabins', icon: '🏠' },
-  { label: 'Amazing pools', icon: '🏊' },
-  { label: 'Treehouses', icon: '🌳' },
-  { label: 'Desert', icon: '🌵' },
-  { label: 'Mansion', icon: '🏰' },
-  { label: 'Vineyards', icon: '🍇' },
-  { label: 'Countryside', icon: '👨‍🌾' },
-  { label: 'Islands', icon: '🏝️' },
-  { label: 'Ski-in/out', icon: '⛷️' },
-  { label: 'Luxe', icon: '💎' },
+  { label: 'All', icon: 'lucide:globe' },
+  { label: 'Beachfront', icon: 'lucide:umbrella' },
+  { label: 'Cabins', icon: 'lucide:home' },
+  { label: 'Amazing pools', icon: 'lucide:waves' },
+  { label: 'Treehouses', icon: 'lucide:trees' },
+  { label: 'Desert', icon: 'lucide:sun' },
+  { label: 'Mansion', icon: 'lucide:building' },
+  { label: 'Vineyards', icon: 'lucide:grape' },
+  { label: 'Countryside', icon: 'lucide:mountain' },
+  { label: 'Islands', icon: 'lucide:palmtree' },
+  { label: 'Ski-in/out', icon: 'lucide:snowflake' },
+  { label: 'Luxe', icon: 'lucide:diamond' },
 ];
 
 const handleScroll = () => {
@@ -90,7 +92,7 @@ onMounted(() => {
 .nav-container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 20px; /* Added 20px margin-like padding */
+  padding: 0 20px;
   position: relative;
   display: flex;
   align-items: center;
@@ -133,8 +135,11 @@ onMounted(() => {
   border-bottom-color: #222;
 }
 
-.icon {
-  font-size: 1.5rem;
+.icon-wrap {
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .label {
@@ -172,15 +177,9 @@ onMounted(() => {
   right: 10px;
 }
 
-.scroll-btn span {
-  font-size: 1.25rem;
-  line-height: 1;
-  margin-top: -2px;
-}
-
 @media (min-width: 1024px) {
   .nav-container {
-    padding: 0 60px; /* More generous on very large screens */
+    padding: 0 60px;
   }
   .scroll-btn.left { left: 20px; }
   .scroll-btn.right { right: 20px; }
