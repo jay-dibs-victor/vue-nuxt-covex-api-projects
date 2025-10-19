@@ -12,4 +12,4 @@ export default defineNuxtConfig({
       convexUrl: process.env.NUXT_PUBLIC_CONVEX_URL || "https://brave-fennec-549.convex.cloud"
     }
   }
-
+})
