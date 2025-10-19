@@ -1,18 +1,20 @@
-import { ref, onUnmounted, watch, unref, isRef } from 'vue';
+import { ref, onUnmounted, watch, unref, isRef, type Ref } from 'vue';
 import { ConvexClient } from 'convex/browser';
+
+// Hardcoded fallback so this works both in component context and module scope
+const CONVEX_URL = 
+  (import.meta as any).env?.NUXT_PUBLIC_CONVEX_URL ||
+  (import.meta as any).env?.VITE_CONVEX_URL ||
+  "https://brave-fennec-549.convex.cloud";
 
 let client: ConvexClient | null = null;
 
 export function getConvexClient(): ConvexClient | null {
-  if (!client && import.meta.client) {
-    const config = useRuntimeConfig();
-    const convexUrl = config.public.convexUrl as string;
-    console.log(`[Airbnb-Convex] Initializing client with: ${convexUrl}`);
-    if (!convexUrl) {
-      console.error("[Airbnb-Convex] Critical: Convex URL is missing from runtime config!");
-    }
+  // Use typeof window check instead of import.meta.client
+  if (!client && typeof window !== 'undefined') {
+    console.log(`[Airbnb-Convex] Initializing client with: ${CONVEX_URL}`);
     try {
-      client = new ConvexClient(convexUrl);
+      client = new ConvexClient(CONVEX_URL);
     } catch (err) {
       console.error(`[Airbnb-Convex] Failed to initialize client:`, err);
     }
@@ -21,11 +23,13 @@ export function getConvexClient(): ConvexClient | null {
 }
 
 export function useConvexQuery<T = any>(queryName: string, args: any = {}) {
-  const data = ref<T | undefined>(undefined);
+  const data = ref<T | undefined>(undefined) as Ref<T | undefined>;
   const error = ref<Error | undefined>(undefined);
   const loading = ref(true);
 
-  if (!import.meta.client) {
+  // Skip on server-side render
+  if (typeof window === 'undefined') {
+    loading.value = false;
     return { data, error, loading };
   }
 
@@ -40,35 +44,39 @@ export function useConvexQuery<T = any>(queryName: string, args: any = {}) {
 
   const subscribe = (currentArgs: any) => {
     if (unsubscribe) unsubscribe();
-    
-    // Ensure we pass a plain object to Convex
+
+    // Unwrap Vue reactive wrappers to a plain object
     const plainArgs = isRef(currentArgs) ? currentArgs.value : unref(currentArgs);
-    
+
     loading.value = true;
     try {
-      unsubscribe = convex.onUpdate(queryName, plainArgs, 
-        (newData: T) => { 
-          data.value = newData; 
+      unsubscribe = convex.onUpdate(
+        queryName as any,
+        plainArgs,
+        (newData: T) => {
+          data.value = newData;
           error.value = undefined;
           loading.value = false;
-        }, 
-        (err: Error) => { 
+        },
+        (err: Error) => {
           console.error(`[Convex] Query error (${queryName}):`, err);
-          error.value = err; 
+          error.value = err;
           loading.value = false;
         }
       );
     } catch (err: any) {
-      console.error(`[Convex] Subscription failed:`, err);
+      console.error(`[Convex] Subscription failed for ${queryName}:`, err);
       error.value = err as Error;
       loading.value = false;
     }
   };
 
-  // Watch for changes in args and re-subscribe
-  watch(() => (isRef(args) ? args.value : unref(args)), (newArgs) => {
-    subscribe(newArgs);
-  }, { immediate: true, deep: true });
+  // Re-subscribe whenever args change (e.g. category filter changes)
+  watch(
+    () => (isRef(args) ? args.value : unref(args)),
+    (newArgs) => { subscribe(newArgs); },
+    { immediate: true, deep: true }
+  );
 
   onUnmounted(() => {
     if (unsubscribe) unsubscribe();
@@ -79,9 +87,9 @@ export function useConvexQuery<T = any>(queryName: string, args: any = {}) {
 
 export function useConvexMutation(mutationName: string) {
   return (args: any = {}) => {
-    if (!import.meta.client) return Promise.resolve(null);
+    if (typeof window === 'undefined') return Promise.resolve(null);
     const convex = getConvexClient();
     if (!convex) return Promise.reject(new Error("Convex client not initialized"));
-    return convex.mutation(mutationName, unref(args));
+    return convex.mutation(mutationName as any, unref(args));
   };
 }
