@@ -11,6 +11,9 @@ export const listProducts = query({
     sortBy: v.optional(v.string()),
     featured: v.optional(v.boolean()),
     isNew: v.optional(v.boolean()),
+    sizes: v.optional(v.array(v.string())),
+    colors: v.optional(v.array(v.string())),
+    minRating: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     let products = await ctx.db.query("ec_products").collect();
@@ -24,16 +27,29 @@ export const listProducts = query({
       );
     }
     if (args.minPrice !== undefined) {
-      products = products.filter((p) => p.price >= args.minPrice!);
+      products = products.filter((p) => p.price >= args.minPrice);
     }
     if (args.maxPrice !== undefined) {
-      products = products.filter((p) => p.price <= args.maxPrice!);
+      products = products.filter((p) => p.price <= args.maxPrice);
     }
     if (args.featured !== undefined) {
       products = products.filter((p) => p.featured === args.featured);
     }
     if (args.isNew !== undefined) {
       products = products.filter((p) => p.isNew === args.isNew);
+    }
+    if (args.sizes && args.sizes.length > 0) {
+      products = products.filter((p) => 
+        p.sizes.some(s => args.sizes.includes(s))
+      );
+    }
+    if (args.colors && args.colors.length > 0) {
+      products = products.filter((p) => 
+        p.colors.some(c => args.colors.includes(c))
+      );
+    }
+    if (args.minRating !== undefined) {
+      products = products.filter((p) => (p.rating ?? 0) >= args.minRating);
     }
 
     if (args.sortBy === "price_asc") {
