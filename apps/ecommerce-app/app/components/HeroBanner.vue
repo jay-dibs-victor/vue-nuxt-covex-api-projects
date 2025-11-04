@@ -1,17 +1,19 @@
 <template>
   <section class="hero">
-    <div class="hero-content">
-      <span class="badge">New Season Drop</span>
-      <h1>UNLEASH YOUR <br /><span class="accent">VELOCITY</span></h1>
-      <p>High-performance activewear engineered for the modern athlete. Push your limits with our latest drop.</p>
-      <div class="actions">
-        <button class="primary" @click="scrollToProducts">Shop Collection</button>
-        <button class="secondary">View Lookbook</button>
+    <div class="container hero-container">
+      <div class="hero-content">
+        <span class="badge">New Season Drop</span>
+        <h1>UNLEASH YOUR <br /><span class="accent">VELOCITY</span></h1>
+        <p>High-performance activewear engineered for the modern athlete. Push your limits with our latest drop.</p>
+        <div class="actions">
+          <button class="primary" @click="scrollToProducts">Shop Collection</button>
+          <button class="secondary">View Lookbook</button>
+        </div>
       </div>
-    </div>
-    <div class="hero-visual">
-      <div class="gradient-bg"></div>
-      <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1200" alt="Athlete training" />
+      <div class="hero-visual">
+        <div class="gradient-bg"></div>
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1200" alt="Athlete training" />
+      </div>
     </div>
   </section>
 </template>
@@ -25,12 +27,15 @@ const scrollToProducts = () => {
 
 <style scoped>
 .hero {
+  padding: 6rem 0;
+}
+
+.hero-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 80vh;
+  min-height: 70vh;
   align-items: center;
-  gap: 4rem;
-  padding: 4rem 0;
+  gap: 6rem;
 }
 
 .hero-content {

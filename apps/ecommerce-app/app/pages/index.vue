@@ -29,11 +29,11 @@
   display: grid;
   grid-template-columns: 260px 1fr;
   gap: 4rem;
-  padding: 4rem 0;
+  padding: 8rem 0;
 }
 
 .featured-section {
-  padding: 6rem 0;
+  padding: 8rem 0;
   border-top: 1px solid #eee;
 }
 
@@ -64,6 +64,7 @@
   .main-layout {
     grid-template-columns: 1fr;
     gap: 2rem;
+    padding: 4rem 0;
   }
 }
 </style>
