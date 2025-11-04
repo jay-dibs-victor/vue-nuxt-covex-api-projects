@@ -14,7 +14,8 @@
     "dev:airbnb": "cd apps/airbnb-clone && npm run dev -- --port 3002",
     "dev:airbnb:backend": "cd apps/airbnb-clone && npx convex dev",
     "dev:ecommerce": "cd apps/ecommerce-app && npm run dev -- --port 3003",
-    "dev:all": "npx concurrently --kill-others --delay 3000 \"npm run dev:lms:backend\" \"npm run dev:airbnb:backend\" \"npm run dev:lms\" \"npm run dev:airbnb\" \"npm run dev:ecommerce\" \"npm run dev\"",
+    "dev:ecommerce:backend": "cd apps/ecommerce-app && npx convex dev",
+    "dev:all": "npx concurrently --kill-others --delay 10000 \"npm run dev:lms:backend\" \"npm run dev:airbnb:backend\" \"npm run dev:ecommerce:backend\" \"npm run dev:lms\" \"npm run dev:airbnb\" \"npm run dev:ecommerce\" \"npm run dev\"",
     "clean": "pkill -f \"nuxt|vite|node\" || true && rm -rf apps/**/.nuxt apps/**/.output",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
