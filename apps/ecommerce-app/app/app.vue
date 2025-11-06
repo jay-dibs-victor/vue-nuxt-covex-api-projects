@@ -41,13 +41,25 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
+import { useConvexMutation } from '~/composables/useConvex'
 
 const toastRef = ref(null)
+const seedMut = useConvexMutation('seed:default')
 
-onMounted(() => {
+onMounted(async () => {
   // Initialize global toast
   if (typeof window !== 'undefined') {
     window.$toast = toastRef.value
+  }
+
+  // Auto-seed if empty
+  try {
+    const res = await seedMut({})
+    if (res?.seeded > 0) {
+      console.log(`[Convex] Seeded ${res.seeded} products.`)
+    }
+  } catch (err) {
+    console.error('[Convex] Auto-seed failed:', err)
   }
 })
 </script>
