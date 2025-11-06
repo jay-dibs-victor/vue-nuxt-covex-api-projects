@@ -3,7 +3,7 @@ import { ConvexClient } from 'convex/browser';
 
 const CONVEX_URL =
   (import.meta as any).env?.NUXT_PUBLIC_CONVEX_URL ||
-  "https://famous-seal-464.convex.cloud";
+  "https://enchanted-ant-559.convex.cloud";
 
 let client: ConvexClient | null = null;
 

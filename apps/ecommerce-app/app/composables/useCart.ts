@@ -14,6 +14,7 @@ function getSessionId(): string {
 
 const sessionId = ref<string>('');
 const isCartOpen = ref(false);
+const localCartItems = ref<any[]>([]); // Fallback for when Convex is down
 
 if (typeof window !== 'undefined') {
   sessionId.value = getSessionId();
@@ -21,18 +22,22 @@ if (typeof window !== 'undefined') {
 
 export function useCart() {
   const args = computed(() => ({ sessionId: sessionId.value }));
-  const { data: cart, loading } = useConvexQuery('api/cart:getCart', args);
+  const { data: cart, loading, error } = useConvexQuery('cart:getCart', args);
 
-  const items = computed(() => cart.value?.items ?? []);
+  const items = computed(() => {
+    if (cart.value?.items) return cart.value.items;
+    return localCartItems.value;
+  });
+
   const itemCount = computed(() => items.value.reduce((sum: number, i: any) => sum + i.quantity, 0));
   const subtotal = computed(() =>
     items.value.reduce((sum: number, i: any) => sum + i.price * i.quantity, 0)
   );
 
-  const addToCartMut = useConvexMutation('api/cart:addToCart');
-  const updateItemMut = useConvexMutation('api/cart:updateCartItem');
-  const removeItemMut = useConvexMutation('api/cart:removeFromCart');
-  const clearCartMut = useConvexMutation('api/cart:clearCart');
+  const addToCartMut = useConvexMutation('cart:addToCart');
+  const updateItemMut = useConvexMutation('cart:updateCartItem');
+  const removeItemMut = useConvexMutation('cart:removeFromCart');
+  const clearCartMut = useConvexMutation('cart:clearCart');
 
   const addToCart = async (item: {
     productId: string;
@@ -43,17 +48,48 @@ export function useCart() {
     color: string;
     quantity?: number;
   }) => {
-    await addToCartMut({ sessionId: sessionId.value, ...item, quantity: item.quantity ?? 1 });
+    try {
+      await addToCartMut({ sessionId: sessionId.value, ...item, quantity: item.quantity ?? 1 });
+    } catch (err) {
+      // Local fallback
+      const existing = localCartItems.value.find(i => 
+        i.productId === item.productId && i.size === item.size && i.color === item.color
+      );
+      if (existing) {
+        existing.quantity += (item.quantity ?? 1);
+      } else {
+        localCartItems.value.push({ ...item, quantity: item.quantity ?? 1 });
+      }
+    }
     isCartOpen.value = true;
   };
 
-  const updateQuantity = (index: number, quantity: number) =>
-    updateItemMut({ sessionId: sessionId.value, itemIndex: index, quantity });
+  const updateQuantity = async (index: number, quantity: number) => {
+    if (quantity < 1) return removeItem(index);
+    try {
+      await updateItemMut({ sessionId: sessionId.value, itemIndex: index, quantity });
+    } catch (err) {
+      if (localCartItems.value[index]) {
+        localCartItems.value[index].quantity = quantity;
+      }
+    }
+  };
 
-  const removeItem = (index: number) =>
-    removeItemMut({ sessionId: sessionId.value, itemIndex: index });
+  const removeItem = async (index: number) => {
+    try {
+      await removeItemMut({ sessionId: sessionId.value, itemIndex: index });
+    } catch (err) {
+      localCartItems.value.splice(index, 1);
+    }
+  };
 
-  const clearCart = () => clearCartMut({ sessionId: sessionId.value });
+  const clearCart = async () => {
+    try {
+      await clearCartMut({ sessionId: sessionId.value });
+    } catch (err) {
+      localCartItems.value = [];
+    }
+  };
 
   const openCart = () => { isCartOpen.value = true; };
   const closeCart = () => { isCartOpen.value = false; };

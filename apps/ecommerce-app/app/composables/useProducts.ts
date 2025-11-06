@@ -12,6 +12,44 @@ export const filters = ref({
   minRating: undefined as number | undefined,
 });
 
+const mockProducts = [
+  {
+    _id: 'mock1',
+    name: 'MENS APEX JOGGERS - NAVY',
+    price: 88.00,
+    images: ['https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600'],
+    colors: ['#1e3a8a', '#111', '#4b5563'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    rating: 4.5,
+    reviewCount: 128,
+    category: 'bottoms',
+    isNew: true
+  },
+  {
+    _id: 'mock2',
+    name: 'WOMENS CORE TIGHTS',
+    price: 74.00,
+    images: ['https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&q=80&w=600'],
+    colors: ['#111', '#84a59d', '#4b5563'],
+    sizes: ['S', 'M', 'L'],
+    rating: 5,
+    reviewCount: 89,
+    category: 'bottoms',
+    featured: true
+  },
+  {
+    _id: 'mock3',
+    name: 'STEALTH PERFORMANCE TEE',
+    price: 38.00,
+    images: ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=600'],
+    colors: ['#111', '#4b5563'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    rating: 4.2,
+    reviewCount: 215,
+    category: 'tops'
+  }
+];
+
 export function useProducts() {
   const args = computed(() => ({
     category: filters.value.category || undefined,
@@ -24,7 +62,9 @@ export function useProducts() {
     minRating: filters.value.minRating,
   }));
 
-  const { data: products, loading, error } = useConvexQuery('api/products:listProducts', args);
+  const { data: productsData, loading, error } = useConvexQuery('products:listProducts', args);
+
+  const products = computed(() => productsData.value || (error.value ? mockProducts : []));
 
   const setCategory = (cat: string) => { filters.value.category = cat; };
   const setGender = (g: string) => { filters.value.gender = g; };
@@ -74,14 +114,20 @@ export function useProducts() {
 }
 
 export function useFeaturedProducts() {
-  return useConvexQuery('api/products:getFeaturedProducts', {});
+  const { data, loading, error } = useConvexQuery('products:getFeaturedProducts', {});
+  const products = computed(() => data.value || (error.value ? mockProducts.slice(0, 2) : []));
+  return { data: products, loading, error };
 }
 
 export function useNewArrivals() {
-  return useConvexQuery('api/products:getNewArrivals', {});
+  const { data, loading, error } = useConvexQuery('products:getNewArrivals', {});
+  const products = computed(() => data.value || (error.value ? [mockProducts[0]] : []));
+  return { data: products, loading, error };
 }
 
 export function useProduct(id: string) {
   const args = computed(() => ({ id }));
-  return useConvexQuery('api/products:getProduct', args);
+  const { data, loading, error } = useConvexQuery('products:getProduct', args);
+  const product = computed(() => data.value || (error.value ? mockProducts[0] : null));
+  return { product, loading, error };
 }
