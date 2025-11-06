@@ -34,8 +34,8 @@ if (typeof window !== 'undefined') {
 export function useAuth() {
   const isLoggedIn = computed(() => !!currentUser.value);
 
-  const createUserMut = useConvexMutation('api/users:createUser');
-  const updateProfileMut = useConvexMutation('api/users:updateProfile');
+  const createUserMut = useConvexMutation('users:createUser');
+  const updateProfileMut = useConvexMutation('users:updateProfile');
 
   const register = async (email: string, name: string, password: string) => {
     authLoading.value = true;
@@ -63,7 +63,7 @@ export function useAuth() {
     try {
       const convex = getConvexClient();
       if (!convex) throw new Error('Client not ready');
-      const user = await convex.query('api/users:getUserByEmail' as any, { email });
+      const user = await convex.query('users:getUserByEmail' as any, { email });
       if (!user) throw new Error('No account found for that email');
       if (!verifyPassword(password, user.passwordHash)) throw new Error('Incorrect password');
       const authUser: AuthUser = { _id: user._id, email: user.email, name: user.name, address: user.address };
