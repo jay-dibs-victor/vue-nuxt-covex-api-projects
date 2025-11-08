@@ -10,8 +10,13 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "convex": "^1.38.0",
     "nuxt": "^4.4.4",
     "vue": "^3.5.33",
     "vue-router": "^5.0.6"
+  },
+  "devDependencies": {
+    "@nuxt/icon": "^2.2.2",
+    "@types/node": "^24.12.3"
   }
 }
