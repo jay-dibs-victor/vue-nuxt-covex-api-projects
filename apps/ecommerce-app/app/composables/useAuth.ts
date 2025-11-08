@@ -1,6 +1,5 @@
 import { ref, computed } from 'vue';
-import { useConvexMutation } from './useConvex';
-import { getConvexClient } from './useConvex';
+import { useConvexMutation, getConvexClient } from '~/composables/useConvex';
 
 interface AuthUser {
   _id: string;

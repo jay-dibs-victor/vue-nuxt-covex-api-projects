@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue';
-import { useConvexQuery, useConvexMutation } from './useConvex';
+import { useConvexQuery, useConvexMutation } from '~/composables/useConvex';
 
 // Session ID — persisted in localStorage
 function getSessionId(): string {

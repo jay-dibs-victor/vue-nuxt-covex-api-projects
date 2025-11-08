@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue';
-import { useConvexQuery } from './useConvex';
+import { useConvexQuery } from '~/composables/useConvex';
 
 export const filters = ref({
   category: '',
