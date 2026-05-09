@@ -1,75 +1,28 @@
-# Nuxt Minimal Starter
+# LMS Platform (Nuxt 3 + Convex)
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A school website for learning online. This platform provides a structured learning environment with course tracking, interactive modules, and task management.
+
+## Features
+
+- **Course Management**: Detailed course overviews, instructor profiles, and progress tracking.
+- **Interactive Units**: Support for video and text-based lessons with completion status.
+- **Student Dashboard**: Overview of active courses, upcoming tasks, and recent activities.
+- **Real-time Data**: Convex handles all course content and student progress in real-time.
 
 ## Setup
 
-Make sure to install dependencies:
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-```bash
-# npm
-npm install
+2. **Development Server**:
+   ```bash
+   npm run dev -- --port 3001
+   ```
 
-# pnpm
-pnpm install
+## Test Credentials
 
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+You can create a new account instantly or use the following for testing:
+- **Email**: `test@example.com`
+- **Password**: `password123`

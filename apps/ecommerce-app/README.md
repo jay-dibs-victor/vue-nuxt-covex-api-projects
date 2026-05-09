@@ -1,75 +1,28 @@
-# Nuxt Minimal Starter
+# Ecommerce App (Nuxt 3 + Convex)
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+An online shop to buy clothes. This application demonstrates advanced cart logic, product filtering, and a sleek checkout experience.
+
+## Features
+
+- **Product Showcase**: High-quality imagery with category and gender filters.
+- **Cart Management**: Real-time cart updates and persistent user sessions.
+- **GSAP Animations**: Micro-interactions and smooth page transitions.
+- **Secure Backend**: Convex integration for product management and order processing.
 
 ## Setup
 
-Make sure to install dependencies:
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-```bash
-# npm
-npm install
+2. **Development Server**:
+   ```bash
+   npm run dev -- --port 3003
+   ```
 
-# pnpm
-pnpm install
+## Test Credentials
 
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+You can create a new account instantly or use the following for testing:
+- **Email**: `test@example.com`
+- **Password**: `password123`

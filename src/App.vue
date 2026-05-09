@@ -14,7 +14,7 @@ const projects = ref<Project[]>([
   {
     id: 'portfolio',
     title: 'Vue Portfolio App',
-    description: 'A personal showcase with a revamped premium footer and cleaned-up UI components.',
+    description: 'A personal website to show my skills.',
     image: '/assets/portfolio.png',
     port: 5174,
     tags: ['Vue 3', 'Vite', 'Portfolio']
@@ -22,7 +22,7 @@ const projects = ref<Project[]>([
   {
     id: 'lms',
     title: 'Nuxt JS LMS Platform',
-    description: 'Real-time learning platform using Convex DB and Claude LLM for content personalization.',
+    description: 'A school website for learning online.',
     image: '/assets/lms.png',
     port: 3001,
     tags: ['Nuxt 3', 'Convex', 'AI']
@@ -30,7 +30,7 @@ const projects = ref<Project[]>([
   {
     id: 'airbnb',
     title: 'Airbnb Fullstack Clone',
-    description: 'High-fidelity property booking platform with AWS infrastructure and real-time listings.',
+    description: 'A website to book houses for trips.',
     image: '/assets/airbnb.png',
     port: 3002,
     tags: ['Nuxt 3', 'AWS', 'Convex']
@@ -38,7 +38,7 @@ const projects = ref<Project[]>([
   {
     id: 'ecommerce',
     title: 'Enterprise Ecommerce',
-    description: 'Full-featured estore with product catalog, cart, and production-ready checkout flow.',
+    description: 'An online shop to buy clothes.',
     image: '/assets/ecommerce.png',
     port: 3003,
     tags: ['Nuxt 3', 'Unit Testing', 'CI/CD']
